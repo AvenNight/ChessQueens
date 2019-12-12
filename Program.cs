@@ -1,5 +1,5 @@
-﻿using System;
-using Extensions;
+﻿using Extensions;
+using System;
 
 namespace ChessQueens
 {
@@ -8,7 +8,7 @@ namespace ChessQueens
         static void Main()
         {
             Console.WriteLine("\nНайти все мирные расстановки ферзей на шахматной доске N на N.");
-            int n = Read.ReadIntNumber("Введите размер стороны доски N:", 0);
+            int n = Read.ReadIntNumber("Введите размер стороны доски N:", 0, 20);
 
             int maxQueens = 0;
             int boardNum = 0;
@@ -28,7 +28,7 @@ namespace ChessQueens
                     {
                         maxQueens = curQueens;
                         boardNum = x + 1 + y * n;
-                        Array.Copy(queens, maxQueensBoard, n*n);
+                        Array.Copy(queens, maxQueensBoard, n * n);
                     }
                     DrawBoard(queens, safePlaces, x + 1 + y * n);
                 }
@@ -114,9 +114,9 @@ namespace ChessQueens
             return count;
         }
 
-        static void DrawBoard(bool[,] queens, bool[,] safePlaces, int number=-1)
+        static void DrawBoard(bool[,] queens, bool[,] safePlaces, int number = -1)
         {
-            if (number!=-1)
+            if (number != -1)
                 Console.WriteLine($"{number})");
 
             (int x, int y) boardSize = (safePlaces.GetLength(0), safePlaces.GetLength(1));
@@ -124,16 +124,15 @@ namespace ChessQueens
             for (int y = 0; y < boardSize.y; y++)
                 for (int x = 0; x < boardSize.x; x++)
                 {
-                    if (queens[x, y])
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(" ▄");
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.Write((safePlaces[x, y] ? "  " : " ▄"));
-                    }
+                    Console.ForegroundColor = 
+                        queens[x, y] ?
+                        ConsoleColor.Red :
+                        (x + y) % 2 == 0 ?
+                        ConsoleColor.Gray :
+                        ConsoleColor.DarkGray;
+                    
+                    Console.Write("██");
+
                     if (x == boardSize.y - 1)
                         Console.WriteLine();
                 }
